@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Diário de Bordo</h2>
+    <a href="{% url 'criar_diario' %}" class="btn btn-primary">+ Novo Registro</a>
+</div>
+
+<table class="table table-hover table-bordered shadow-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Rota</th>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th style="width:150px;">Ações</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for d in diarios %}
+        <tr>
+            <td>{{ d.rota }}</td>
+            <td>{{ d.data }}</td>
+            <td>{{ d.descricao }}</td>
+            <td>
+                <a href="{% url 'editar_diario' d.id %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'deletar_diario' d.id %}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" class="text-center">Nenhum registro encontrado</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

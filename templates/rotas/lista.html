@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between mb-3">
+    <h2>Rotas</h2>
+    <a href="{% url 'criar_rota' %}" class="btn btn-primary">+ Nova Rota</a>
+</div>
+
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Cliente</th>
+            <th>Motorista</th>
+            <th>Veículo</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in rotas %}
+        <tr>
+            <td>{{ r.cliente }}</td>
+            <td>{{ r.motorista }}</td>
+            <td>{{ r.veiculo }}</td>
+            <td>{{ r.status }}</td>
+            <td>
+                <a href="{% url 'editar_rota' r.id %}" class="btn btn-warning btn-sm">Editar</a>
+                <a href="{% url 'deletar_rota' r.id %}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5" class="text-center">Nenhuma rota cadastrada</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

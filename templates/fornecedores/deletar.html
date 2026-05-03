@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-5">
+
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4>Excluir Fornecedor</h4>
+            </div>
+
+            <div class="card-body text-center">
+
+                <p>Deseja excluir <strong>{{ fornecedor.nome }}</strong>?</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <a href="/fornecedores/" class="btn btn-secondary">Cancelar</a>
+                    <button class="btn btn-danger">Excluir</button>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

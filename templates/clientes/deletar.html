@@ -1,10 +1,29 @@
-<h1>Tem certeza que deseja deletar?</h1>
+{% extends 'base.html' %}
 
-<p>{{ cliente.nome }}</p>
+{% block content %}
 
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit">Sim, deletar</button>
-</form>
+<div class="row justify-content-center">
+    <div class="col-md-5">
 
-<a href="{% url 'lista_clientes' %}">Cancelar</a>
+        <div class="card shadow border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4>Excluir Cliente</h4>
+            </div>
+
+            <div class="card-body text-center">
+                <p>Deseja excluir <strong>{{ cliente.nome }}</strong>?</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <a href="/clientes/" class="btn btn-secondary">Cancelar</a>
+                    <button class="btn btn-danger">Excluir</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
