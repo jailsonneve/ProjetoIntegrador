@@ -12,6 +12,8 @@
         <tr>
             <th>Nome</th>
             <th>Telefone</th>
+            <th>Email</th>
+            <th>Endereço</th>
             <th style="width:150px;">Ações</th>
         </tr>
     </thead>
@@ -20,6 +22,8 @@
         <tr>
             <td>{{ c.nome }}</td>
             <td>{{ c.telefone }}</td>
+            <td>{{ c.email }}</td>
+            <td>{{ c.endereco }}</td>
             <td>
                 <a href="{% url 'editar_cliente' c.id %}" class="btn btn-warning btn-sm">Editar</a>
                 <a href="{% url 'deletar_cliente' c.id %}" class="btn btn-danger btn-sm">Excluir</a>

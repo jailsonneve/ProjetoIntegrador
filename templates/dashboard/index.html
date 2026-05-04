@@ -1,49 +1,67 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <h2 class="mb-4">Dashboard</h2>
+
+<!-- FILTRO -->
+<form method="get" class="mb-4">
+    <div class="row">
+        <div class="col-md-4">
+            <label for="tipo">Tipo de Fornecedor</label>
+            <select name="tipo" id="tipo" class="form-select">
+                <option value="">Todos</option>
+                <option value="manutencao" {% if tipo_selecionado == 'manutencao' %}selected{% endif %}>Manutenção</option>
+                <option value="combustivel" {% if tipo_selecionado == 'combustivel' %}selected{% endif %}>Combustível</option>
+                <option value="pecas" {% if tipo_selecionado == 'pecas' %}selected{% endif %}>Peças</option>
+            </select>
+        </div>
+
+        <div class="col-md-2 d-flex align-items-end">
+            <button class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </div>
+</form>
 
 <!-- CARDS -->
 <div class="row mb-4">
 
     <div class="col-md-2">
-        <div class="card shadow text-center p-3">
+        <div class="card shadow text-center p-3 bg-primary text-white">
             <h5>Clientes</h5>
             <h3>{{ clientes }}</h3>
         </div>
     </div>
 
     <div class="col-md-2">
-        <div class="card shadow text-center p-3">
+        <div class="card shadow text-center p-3 bg-success text-white">
             <h5>Motoristas</h5>
             <h3>{{ motoristas }}</h3>
         </div>
     </div>
 
     <div class="col-md-2">
-        <div class="card shadow text-center p-3">
+        <div class="card shadow text-center p-3 bg-warning text-dark">
             <h5>Veículos</h5>
             <h3>{{ veiculos }}</h3>
         </div>
     </div>
 
     <div class="col-md-2">
-        <div class="card shadow text-center p-3">
+        <div class="card shadow text-center p-3 bg-info text-white">
             <h5>Rotas</h5>
             <h3>{{ rotas }}</h3>
         </div>
     </div>
 
     <div class="col-md-2">
-        <div class="card shadow text-center p-3">
+        <div class="card shadow text-center p-3 bg-dark text-white">
             <h5>Fornecedores</h5>
-            <h3>{{ fornecedores }}</h3>
+            <h3>{{ total_fornecedores }}</h3>
         </div>
     </div>
 
     <div class="col-md-2">
-        <div class="card shadow text-center p-3">
+        <div class="card shadow text-center p-3 bg-danger text-white">
             <h5>Registros</h5>
             <h3>{{ diarios }}</h3>
         </div>
@@ -51,45 +69,81 @@
 
 </div>
 
-<!-- ALERTAS -->
-<div class="alert alert-warning">
-    ⚠️ Verifique veículos sem motorista ou rotas sem uso recente
-</div>
-
-<!-- AÇÕES RÁPIDAS -->
+<!-- AÇÕES -->
 <div class="mb-4">
-    <a href="/clientes/novo/" class="btn btn-primary">+ Novo Cliente</a>
-    <a href="/rotas/novo/" class="btn btn-success">+ Nova Rota</a>
-    <a href="/diario/novo/" class="btn btn-dark">+ Novo Registro</a>
+    <a href="/clientes/novo/" class="btn btn-primary">+ Cliente</a>
+    <a href="/rotas/novo/" class="btn btn-success">+ Rota</a>
+    <a href="/diario/novo/" class="btn btn-dark">+ Registro</a>
 </div>
 
-<!-- GRÁFICO -->
-<div class="card shadow p-4">
-    <h5>Atividades</h5>
-    <canvas id="grafico"></canvas>
+<!-- GRÁFICOS -->
+<div class="row">
+
+    <!-- GRÁFICO GERAL -->
+    <div class="col-md-6">
+        <div class="card shadow p-4">
+            <h5>Resumo do Sistema</h5>
+                <canvas id="graficoBarra"></canvas>
+        </div>
+    </div>
+
+    <!-- GRÁFICO POR TIPO -->
+    <div class="col-md-6">
+        <div class="card shadow p-4 text-center">
+            <h5>Fornecedores por Tipo</h5>
+
+            <!-- 👇 CONTROLE DE TAMANHO AQUI -->
+            <div style="max-width: 350px; height: 358px; margin: auto;">
+                <canvas id="graficoPizza"></canvas>
+            </div>
+
+        </div>
+    </div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-new Chart(document.getElementById('grafico'), {
-    type: 'bar',
-    data: {
-        labels: ['Clientes', 'Motoristas', 'Veículos', 'Rotas', 'Fornecedores', 'Registros'],
-        datasets: [{
-            label: 'Dados do Sistema',
-            data: [
-                {{ clientes|default:0 }},
-                {{ motoristas|default:0 }},
-                {{ veiculos|default:0 }},
-                {{ rotas|default:0 }},
-                {{ fornecedores|default:0 }},
-                {{ diarios|default:0 }}
-            ]
-        }]
-    }
-});
-</script>
+    const dadosBarra = [
+        Number("{{ clientes|default:0 }}"),
+        Number("{{ motoristas|default:0 }}"),
+        Number("{{ veiculos|default:0 }}"),
+        Number("{{ rotas|default:0 }}"),
+        Number("{{ total_fornecedores|default:0 }}"),
+        Number("{{ diarios|default:0 }}")
+    ];
 
+    new Chart(document.getElementById('graficoBarra'), {
+        type: 'bar',
+        data: {
+            labels: ['Clientes', 'Motoristas', 'Veículos', 'Rotas', 'Fornecedores', 'Registros'],
+            datasets: [{
+                label: 'Dados do Sistema',
+                data: dadosBarra
+            }]
+        }
+    });
+
+    // Dados do Django
+    const dadosTipo = {{ fornecedores_por_tipo|safe }};
+
+    const labels = dadosTipo.map(item => item.tipo_servico || "Não definido");
+    const valores = dadosTipo.map(item => item.total);
+
+    new Chart(document.getElementById('graficoPizza'), {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: valores
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
 
 {% endblock %}

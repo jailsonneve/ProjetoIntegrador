@@ -12,6 +12,7 @@
         <tr>
             <th>Placa</th>
             <th>Modelo</th>
+            <th>Cor</th>
             <th>Motorista</th>
             <th>Ações</th>
         </tr>
@@ -21,6 +22,7 @@
         <tr>
             <td>{{ v.placa }}</td>
             <td>{{ v.modelo }}</td>
+            <td>{{ v.cor }}</td>
             <td>{{ v.motorista }}</td>
             <td>
                 <a href="{% url 'editar_veiculo' v.id %}" class="btn btn-warning btn-sm">Editar</a>

@@ -11,6 +11,8 @@
     <thead class="table-dark">
         <tr>
             <th>Nome</th>
+            <th>Telefone</th>
+            <th>Email</th>
             <th>CNH</th>
             <th>Ações</th>
         </tr>
@@ -19,6 +21,8 @@
         {% for m in motoristas %}
         <tr>
             <td>{{ m.nome }}</td>
+            <td>{{ m.telefone }}</td>
+            <td>{{ m.email }}</td>
             <td>{{ m.cnh }}</td>
             <td>
                 <a href="{% url 'editar_motorista' m.id %}" class="btn btn-warning btn-sm">Editar</a>

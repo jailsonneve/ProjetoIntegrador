@@ -10,8 +10,12 @@
 <table class="table table-hover table-bordered shadow-sm">
     <thead class="table-dark">
         <tr>
-            <th>Nome</th>
+            <th>Empresa</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Endereço</th>
             <th>Serviço</th>
+            <th>Descrição</th>
             <th style="width:150px;">Ações</th>
         </tr>
     </thead>
@@ -19,8 +23,12 @@
     <tbody>
         {% for f in fornecedores %}
         <tr>
-            <td>{{ f.nome }}</td>
-            <td>{{ f.servico }}</td>
+            <td>{{ f.empresa }}</td>
+            <td>{{ f.telefone }}</td>
+            <td>{{ f.email }}</td>
+            <td>{{ f.endereco }}</td>
+            <td>{{ f.tipo_servico }}</td>
+            <td>{{ f.descricao }}</td>
             <td>
                 <a href="{% url 'editar_fornecedor' f.id %}" class="btn btn-warning btn-sm">Editar</a>
                 <a href="{% url 'deletar_fornecedor' f.id %}" class="btn btn-danger btn-sm">Excluir</a>
