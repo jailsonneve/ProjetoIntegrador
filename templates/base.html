@@ -1,83 +1,154 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistema</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
 
     <style>
-        body {
-            background-color: #f4f6f9;
-            display: flex;
-        }
+      body {
+        background-color: #f4f6f9;
+        display: flex;
+      }
 
-        .sidebar {
-            background: #212529;
-            color: white;
-            min-height: 100vh;
-            padding: 20px;
-        }
+      .sidebar {
+        background: #212529;
+        color: white;
+        min-height: 100vh;
+        padding: 20px;
+      }
 
-        .main-content {
-            flex: 1;
-        }   
+      .main-content {
+        flex: 1;
+      }
 
-        .sidebar a {
-            color: #adb5bd;
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            border-radius: 5px;
-        }
+      .sidebar a {
+        color: #adb5bd;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
+        border-radius: 5px;
+      }
 
-        .sidebar a:hover {
-            background: #343a40;
-            color: white;
-        }
+      .sidebar a:hover {
+        background: #343a40;
+        color: white;
+      }
 
-        .card {
-            border-radius: 10px;
-        }
+      .card {
+        border-radius: 10px;
+      }
+
+      .user-box {
+        background: #2c3034;
+        border: 1px solid #3d4348;
+      }
+
+      .user-icon {
+        font-size: 2rem;
+        color: #0d6efd;
+      }
+
+      .config-link {
+        margin-bottom: 10px;
+      }
+
+      .logout-btn {
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: 600;
+        transition: 0.2s;
+      }
+
+      .logout-btn:hover {
+        transform: scale(1.02);
+      }
     </style>
+  </head>
 
-</head>
-
-<body>
-
+  <body>
     <div class="container-fluid">
-        <div class="row">
+      <div class="row">
+        <!-- SIDEBAR -->
+        <div
+          class="col-md-2 sidebar d-flex flex-column justify-content-between"
+        >
+          <div>
+            <!-- LOGO -->
+            <h4 class="text-white mb-4">
+              <i class="bi bi-bus-front"></i> Sistema
+            </h4>
 
-            <!-- SIDEBAR -->
-            <div class="col-md-2 sidebar">
-                <h4 class="text-white mb-4"><i class="bi bi-bus-front"></i> Sistema</h4>
+            <!-- USUÁRIO LOGADO -->
+            <div class="user-box mb-4 p-3 rounded">
+              <div class="d-flex align-items-center gap-2">
+                <div class="user-icon">
+                  <i class="bi bi-person-circle"></i>
+                </div>
 
-                <a href="/"><i class="bi bi-speedometer2"></i> Dashboard</a>
-                <a href="/clientes/"><i class="bi bi-people"></i> Clientes</a>
-                <a href="/motoristas/"><i class="bi bi-person"></i> Motoristas</a>
-                <a href="/veiculos/"><i class="bi bi-truck"></i> Veículos</a>
-                <a href="/rotas/"><i class="bi bi-map"></i> Rotas</a>
-                <a href="/fornecedores/"><i class="bi bi-box"></i> Fornecedores</a>
-                <a href="/diario/"><i class="bi bi-journal"></i> Diário</a>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-light w-100 mt-4">
-                        <i class="bi bi-box-arrow-right"></i> Sair
-                    </button>
-                </form>
+                <div>
+                  <strong>{{ request.user.username }}</strong>
+
+                  <br />
+
+                  <small class="text-light-emphasis">
+                    {{ request.user.email }}
+                  </small>
+                </div>
+              </div>
             </div>
 
-            <!-- CONTEÚDO -->
-            <div class="col-md-10 p-4">
-                {% block content %}{% endblock %}
-            </div>
+            <!-- MENU -->
+            <a href="/"> <i class="bi bi-speedometer2"></i> Dashboard </a>
 
+            <a href="/clientes/"> <i class="bi bi-people"></i> Clientes </a>
+
+            <a href="/motoristas/"> <i class="bi bi-person"></i> Motoristas </a>
+
+            <a href="/veiculos/"> <i class="bi bi-truck"></i> Veículos </a>
+
+            <a href="/rotas/"> <i class="bi bi-map"></i> Rotas </a>
+
+            <a href="/fornecedores/">
+              <i class="bi bi-box"></i> Fornecedores
+            </a>
+
+            <a href="/diario/"> <i class="bi bi-journal"></i> Diário </a>
+          </div>
+
+          <!-- FOOTER SIDEBAR -->
+          <div>
+            <!-- PERFIL -->
+            <a href="/perfil/" class="config-link">
+              <i class="bi bi-gear"></i>
+              Configuração de Conta
+            </a>
+
+            <!-- LOGOUT -->
+            <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+
+              <button class="btn btn-danger logout-btn w-100">
+                <i class="bi bi-box-arrow-right"></i>
+                Sair do Sistema
+              </button>
+            </form>
+          </div>
         </div>
+
+        <!-- CONTEÚDO -->
+        <div class="col-md-10 p-4">{% block content %}{% endblock %}</div>
+      </div>
     </div>
-
-</body>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>

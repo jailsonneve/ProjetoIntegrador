@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from .views import cadastro, dashboard, perfil
+from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,4 +35,6 @@ urlpatterns = [
     path('cadastro/', cadastro, name='cadastro'),
     path('fornecedores/', include('fornecedores.urls')),
     path('perfil/', perfil, name='perfil'),
+    path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
+    path('perfil/senha/', views.alterar_senha, name='alterar_senha'),
 ]

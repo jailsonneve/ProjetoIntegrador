@@ -1,14 +1,171 @@
-<h1>Perfil do Usuário</h1>
+{% extends 'base.html' %}
 
-<p><strong>Nome:</strong> {{ user.username }}</p>
-<p><strong>Email:</strong> {{ user.email }}</p>
-<p><strong>Telefone:</strong> {{ profile.telefone }}</p>
+{% block content %}
 
-<p>
-  <strong>Acesso:</strong>
-  {% if profile.is_gerente %}
-    Gerente 👔
-  {% else %}
-    Funcionário 👷
-  {% endif %}
-</p>
+<div class="container">
+
+    <div class="card shadow border-0 rounded-4 overflow-hidden">
+
+        <!-- HEADER -->
+        <div class="bg-dark text-white p-5">
+            <div class="d-flex align-items-center gap-4">
+
+                <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center"
+                    style="width: 110px; height: 110px; font-size: 45px;">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+
+                <div>
+                    <h2 class="fw-bold mb-1">
+                        {{ user.first_name }} {{ user.last_name }}
+                    </h2>
+
+                    <p class="mb-1 opacity-75">
+                        <i class="bi bi-at"></i> {{ user.username }}
+                    </p>
+
+                    <span class="badge bg-primary fs-6">
+                        {% if profile.is_gerente %}
+                            <i class="bi bi-briefcase-fill"></i> Gerente
+                        {% else %}
+                            <i class="bi bi-person-workspace"></i> Funcionário
+                        {% endif %}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BODY -->
+        <div class="p-4">
+
+            <div class="row g-4">
+
+                <!-- DADOS PESSOAIS -->
+                <div class="col-md-6">
+
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body">
+
+                            <h4 class="fw-bold mb-4">
+                                <i class="bi bi-person-lines-fill"></i>
+                                Dados Pessoais
+                            </h4>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Nome de usuário</small>
+                                <p class="fw-semibold mb-0">{{ user.username }}</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Email</small>
+                                <p class="fw-semibold mb-0">{{ user.email }}</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Telefone</small>
+                                <p class="fw-semibold mb-0">
+                                    {{ profile.telefone|default:"Não informado" }}
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Nome completo</small>
+                                <p class="fw-semibold mb-0">
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SISTEMA -->
+                <div class="col-md-6">
+
+                    <div class="card border-0 shadow-sm h-100 rounded-4">
+                        <div class="card-body">
+
+                            <h4 class="fw-bold mb-4">
+                                <i class="bi bi-gear-fill"></i>
+                                Informações do Sistema
+                            </h4>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Tipo de acesso</small>
+                                <p class="fw-semibold mb-0">
+                                    {% if profile.is_gerente %}
+                                        Gerente
+                                    {% else %}
+                                        Funcionário
+                                    {% endif %}
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Filial</small>
+                                <p class="fw-semibold mb-0">
+                                    {{ profile.filial.nome }}
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Conta criada em</small>
+                                <p class="fw-semibold mb-0">
+                                    {{ user.date_joined }}
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Último login</small>
+                                <p class="fw-semibold mb-0">
+                                    {{ user.last_login }}
+                                </p>
+                            </div>
+
+                            <div class="mb-3">
+                                <small class="text-muted">Status da conta</small>
+
+                                {% if user.is_active %}
+                                    <p class="text-success fw-bold mb-0">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Conta ativa
+                                    </p>
+                                {% else %}
+                                    <p class="text-danger fw-bold mb-0">
+                                        <i class="bi bi-x-circle-fill"></i>
+                                        Conta desativada
+                                    </p>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BOTÕES -->
+            <div class="mt-4 d-flex gap-3">
+
+                <a href="{% url 'editar_perfil' %}" class="btn btn-dark rounded-3 px-4">
+                    <i class="bi bi-pencil-square"></i>
+                    Editar Perfil
+                </a>
+
+                <a href="{% url 'alterar_senha' %}" class="btn btn-outline-secondary rounded-3 px-4">
+                    <i class="bi bi-key-fill"></i>
+                    Alterar Senha
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
