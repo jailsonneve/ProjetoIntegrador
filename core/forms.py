@@ -47,7 +47,6 @@ class CadastroForm(UserCreationForm):
         return user
 
 class EditarPerfilForm(forms.ModelForm):
-
     first_name = forms.CharField(label='Nome')
     last_name = forms.CharField(label='Sobrenome')
     email = forms.EmailField(label='Email')
@@ -57,10 +56,24 @@ class EditarPerfilForm(forms.ModelForm):
         fields = ['telefone']
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user')
+        self.user = kwargs.pop('user')
 
         super().__init__(*args, **kwargs)
 
-        self.fields['first_name'].initial = user.first_name
-        self.fields['last_name'].initial = user.last_name
-        self.fields['email'].initial = user.email
+        self.fields['first_name'].initial = self.user.first_name
+        self.fields['last_name'].initial = self.user.last_name
+        self.fields['email'].initial = self.user.email
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+
+        existe = User.objects.filter(
+            email=email
+        ).exclude(id=self.user.id).exists()
+
+        if existe:
+            raise forms.ValidationError(
+                'Este email já está sendo utilizado.'
+            )
+
+        return email

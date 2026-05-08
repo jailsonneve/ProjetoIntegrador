@@ -7,7 +7,11 @@ from core.models import FilialFornecedores
 
 @login_required
 def lista_fornecedores(request):
-    fornecedores = Fornecedor.objects.all()
+    filial = request.user.perfil.filial
+    ff = FilialFornecedores.objects.filter(
+        filial=filial
+    )
+    fornecedores = [f.fornecedor for f in ff]
     return render(request, 'fornecedores/lista.html', {'fornecedores': fornecedores})
 
 

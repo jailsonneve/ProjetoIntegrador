@@ -7,7 +7,17 @@
         <i class="bi bi-pencil-square"></i>
         Editar Perfil
       </h2>
+      {% if form.errors %}
+      <div class="alert alert-danger">
+        <strong>Erro ao salvar:</strong>
 
+        <ul class="mb-0 mt-2">
+          {% for field in form %} {% for error in field.errors %}
+          <li>{{ error }}</li>
+          {% endfor %} {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
       <form method="POST">
         {% csrf_token %}
 

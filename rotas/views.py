@@ -7,7 +7,11 @@ from core.models import FilialRotas
 
 @login_required
 def lista_rotas(request):
-    rotas = Rota.objects.select_related('motorista', 'veiculo', 'cliente')
+    filial = request.user.perfil.filial
+    fr = FilialRotas.objects.filter(
+        filial=filial
+    )
+    rotas = [f.rotas for f in fr]
     return render(request, 'rotas/lista.html', {'rotas': rotas})
 
 

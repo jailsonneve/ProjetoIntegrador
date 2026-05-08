@@ -7,7 +7,11 @@ from core.models import FilialDiario
 
 @login_required
 def lista_diario(request):
-    diarios = Diario.objects.select_related('rota')
+    filial = request.user.perfil.filial
+    fd = FilialDiario.objects.filter(
+        filial=filial
+    )
+    diarios = [fd.diario for fd in fd]
     return render(request, 'diario/lista.html', {'diarios': diarios})
 
 

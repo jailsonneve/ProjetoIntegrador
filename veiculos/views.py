@@ -7,7 +7,11 @@ from core.models import FilialVeiculos
 
 @login_required
 def lista_veiculos(request):
-    veiculos = Veiculo.objects.select_related('motorista')
+    filial = request.user.perfil.filial
+    fv = FilialVeiculos.objects.filter(
+        filial=filial
+    )
+    veiculos = [f.veiculos for f in fv]
     return render(request, 'veiculos/lista.html', {'veiculos': veiculos})
 
 
