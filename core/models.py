@@ -40,7 +40,8 @@ class Perfil(models.Model):
     telefone = models.CharField(
         max_length=20,
         blank=True,
-        null=True
+        null=True,
+        unique=True
     )
 
     is_gerente = models.BooleanField(default=False)

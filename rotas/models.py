@@ -4,16 +4,6 @@ from veiculos.models import Veiculo
 from clientes.models import Cliente
 
 class Rota(models.Model):
-    data = models.DateField()
-    motorista = models.ForeignKey(Motorista, on_delete=models.CASCADE)
-    veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    endereco_entrega = models.TextField()
-
-    def __str__(self):
-        return f"{self.data} - {self.cliente.nome}"
-
-class Rota(models.Model):
 
     STATUS_CHOICES = [
         ('pendente', 'Pendente'),
