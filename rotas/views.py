@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Rota
 from .forms import RotaForm
+from core.models import FilialRotas
 
 
 @login_required
@@ -15,7 +16,13 @@ def criar_rota(request):
     form = RotaForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        rota = form.save()
+        filial = request.user.perfil.filial
+
+        FilialRotas.objects.create(
+            rotas=rota,
+            filial=filial
+        )
         return redirect('lista_rotas')
 
     return render(request, 'rotas/form.html', {'form': form})

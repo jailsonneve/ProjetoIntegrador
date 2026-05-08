@@ -14,7 +14,22 @@
 
     <form method="POST">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        {% for field in form %}
+        <div class="field-wrapper mb-3">
+            {{ field.label_tag }}
+            {{ field }}
+
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+          </div>
+        {% endfor %}
 
         <button class="btn btn-success w-100">Cadastrar</button>
     </form>

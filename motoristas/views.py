@@ -1,21 +1,31 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Motorista
+from core.models import FilialMotoristas
 from .forms import MotoristaForm
 
 
 @login_required
 def lista_motoristas(request):
-    motoristas = Motorista.objects.all()
+    filial = request.user.perfil.filial
+    fm = FilialMotoristas.objects.filter(
+        filial=filial
+    )
+    motoristas = [f.motorista for f in fm]
     return render(request, 'motoristas/lista.html', {'motoristas': motoristas})
-
 
 @login_required
 def criar_motorista(request):
     form = MotoristaForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        motorista = form.save()
+        filial = request.user.perfil.filial
+
+        FilialMotoristas.objects.create(
+            motorista=motorista,
+            filial=filial
+        )
         return redirect('lista_motoristas')
 
     return render(request, 'motoristas/form.html', {'form': form})

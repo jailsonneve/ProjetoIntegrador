@@ -56,7 +56,7 @@
     <div class="col-md-2">
         <div class="card shadow text-center p-3 bg-dark text-white">
             <h5>Fornecedores</h5>
-            <h3>{{ total_fornecedores }}</h3>
+            <h3>{{ fornecedores }}</h3>
         </div>
     </div>
 
@@ -92,7 +92,6 @@
         <div class="card shadow p-4 text-center">
             <h5>Fornecedores por Tipo</h5>
 
-            <!-- 👇 CONTROLE DE TAMANHO AQUI -->
             <div style="max-width: 350px; height: 358px; margin: auto;">
                 <canvas id="graficoPizza"></canvas>
             </div>
@@ -110,7 +109,7 @@
         Number("{{ motoristas|default:0 }}"),
         Number("{{ veiculos|default:0 }}"),
         Number("{{ rotas|default:0 }}"),
-        Number("{{ total_fornecedores|default:0 }}"),
+        Number("{{ fornecedores|default:0 }}"),
         Number("{{ diarios|default:0 }}")
     ];
 

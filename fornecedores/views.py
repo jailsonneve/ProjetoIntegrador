@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Fornecedor
 from .forms import FornecedorForm
+from core.models import FilialFornecedores
 
 
 @login_required
@@ -15,7 +16,13 @@ def criar_fornecedor(request):
     form = FornecedorForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        fornecedor = form.save()
+        filial = request.user.perfil.filial
+
+        FilialFornecedores.objects.create(
+            fornecedor=fornecedor,
+            filial=filial
+        )
         return redirect('lista_fornecedores')
 
     return render(request, 'fornecedores/form.html', {'form': form})

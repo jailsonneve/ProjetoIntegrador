@@ -1,12 +1,17 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Cliente
+from core.models import FilialCliente, Perfil
 from .forms import ClienteForm
 
 
 @login_required
 def lista_clientes(request):
-    clientes = Cliente.objects.all()
+    filial = request.user.perfil.filial
+    fc = FilialCliente.objects.filter(
+        filial=filial
+    )
+    clientes = [f.cliente for f in fc]
     return render(request, 'clientes/lista.html', {'clientes': clientes})
 
 
@@ -15,7 +20,19 @@ def criar_cliente(request):
     form = ClienteForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+
+        # salva cliente
+        cliente = form.save()
+
+        # pega filial do usuário logado
+        filial = request.user.perfil.filial
+
+        # cria relação cliente x filial
+        FilialCliente.objects.create(
+            cliente=cliente,
+            filial=filial
+        )
+
         return redirect('lista_clientes')
 
     return render(request, 'clientes/form.html', {'form': form})

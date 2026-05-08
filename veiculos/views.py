@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Veiculo
 from .forms import VeiculoForm
+from core.models import FilialVeiculos
 
 
 @login_required
@@ -15,7 +16,13 @@ def criar_veiculo(request):
     form = VeiculoForm(request.POST or None)
 
     if form.is_valid():
-        form.save()
+        veiculo = form.save()
+        filial = request.user.perfil.filial
+
+        FilialVeiculos.objects.create(
+            veiculos=veiculo,
+            filial=filial
+        )
         return redirect('lista_veiculos')
 
     return render(request, 'veiculos/form.html', {'form': form})

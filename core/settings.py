@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'motoristas',
     'veiculos',
     'rotas',
+    'core.apps.CoreConfig',
     'diario',
 ]
 
