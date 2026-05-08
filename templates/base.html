@@ -72,6 +72,34 @@
       .logout-btn:hover {
         transform: scale(1.02);
       }
+      .sidebar a {
+        color: #adb5bd;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 15px;
+        text-decoration: none;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        transition: all 0.2s ease;
+        font-weight: 500;
+      }
+
+      .sidebar a:hover {
+        background: #343a40;
+        color: white;
+        transform: translateX(3px);
+      }
+
+      .sidebar a.active {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+        color: white;
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.35);
+      }
+
+      .sidebar a.active i {
+        color: white;
+      }
     </style>
   </head>
 
@@ -108,29 +136,65 @@
             </div>
 
             <!-- MENU -->
-            <a href="/"> <i class="bi bi-speedometer2"></i> Dashboard </a>
+            <a
+              href="/"
+              class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"
+            >
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
 
-            <a href="/clientes/"> <i class="bi bi-people"></i> Clientes </a>
+            <a
+              href="/clientes/"
+              class="{% if request.resolver_match.url_name == 'lista_clientes' %}active{% endif %}"
+            >
+              <i class="bi bi-people"></i> Clientes
+            </a>
 
-            <a href="/motoristas/"> <i class="bi bi-person"></i> Motoristas </a>
+            <a
+              href="/motoristas/"
+              class="{% if request.resolver_match.url_name == 'lista_motoristas' %}active{% endif %}"
+            >
+              <i class="bi bi-person"></i> Motoristas
+            </a>
 
-            <a href="/veiculos/"> <i class="bi bi-truck"></i> Veículos </a>
+            <a
+              href="/veiculos/"
+              class="{% if request.resolver_match.url_name == 'lista_veiculos' %}active{% endif %}"
+            >
+              <i class="bi bi-truck"></i> Veículos
+            </a>
 
-            <a href="/rotas/"> <i class="bi bi-map"></i> Rotas </a>
+            <a
+              href="/rotas/"
+              class="{% if request.resolver_match.url_name == 'lista_rotas' %}active{% endif %}"
+            >
+              <i class="bi bi-map"></i> Rotas
+            </a>
 
-            <a href="/fornecedores/">
+            <a
+              href="/fornecedores/"
+              class="{% if request.resolver_match.url_name == 'lista_fornecedores' %}active{% endif %}"
+            >
               <i class="bi bi-box"></i> Fornecedores
             </a>
 
-            <a href="/diario/"> <i class="bi bi-journal"></i> Diário </a>
+            <a
+              href="/diario/"
+              class="{% if request.resolver_match.url_name == 'lista_diario' %}active{% endif %}"
+            >
+              <i class="bi bi-journal"></i> Diário
+            </a>
           </div>
 
           <!-- FOOTER SIDEBAR -->
           <div>
             <!-- PERFIL -->
-            <a href="/perfil/" class="config-link">
+            <a
+              href="/perfil/"
+              class="config-link {% if request.resolver_match.url_name == 'perfil' %}active{% endif %}"
+            >
               <i class="bi bi-gear"></i>
-              Configuração de Conta
+              Configurações
             </a>
 
             <!-- LOGOUT -->
