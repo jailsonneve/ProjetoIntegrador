@@ -21,7 +21,7 @@
         {% for d in diarios %}
         <tr>
             <td>{{ d.rota }}</td>
-            <td>{{ d.data_hora }}</td>
+            <td>{{ d.data_hora|date:"d/m/Y H:i" }}</td>
             <td>{{ d.descricao }}</td>
             <td>
                 <a href="{% url 'editar_diario' d.id %}" class="btn btn-warning btn-sm">Editar</a>

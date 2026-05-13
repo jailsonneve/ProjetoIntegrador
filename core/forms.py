@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Perfil
-
+from core.utils import validar_telefone
 from .models import Filial
 
 
@@ -63,6 +63,25 @@ class EditarPerfilForm(forms.ModelForm):
         self.fields['first_name'].initial = self.user.first_name
         self.fields['last_name'].initial = self.user.last_name
         self.fields['email'].initial = self.user.email
+
+    # validar telefone
+    def clean_telefone(self):
+        telefone = self.cleaned_data['telefone']
+
+        resultado = validar_telefone(telefone)
+
+        if resultado == 'invalido':
+            raise forms.ValidationError(
+                "Telefone com formato inválido!!"
+            )
+
+        if resultado == 'cadastrado':
+            raise forms.ValidationError(
+                "Telefone já cadastrado!!"
+            )
+
+        # tudo ok
+        return telefone
 
     def clean_email(self):
         email = self.cleaned_data['email']

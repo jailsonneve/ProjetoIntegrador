@@ -2,6 +2,7 @@ from django.db import models
 from motoristas.models import Motorista
 from veiculos.models import Veiculo
 from clientes.models import Cliente
+from django.contrib.auth.models import User
 
 class Rota(models.Model):
 
@@ -16,6 +17,7 @@ class Rota(models.Model):
     veiculo = models.ForeignKey(Veiculo, on_delete=models.CASCADE)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     endereco_entrega = models.TextField()
+    criado_por = models.ForeignKey(User,on_delete=models.SET_NULL,null=True)
 
     status = models.CharField(
         max_length=20,
@@ -24,4 +26,4 @@ class Rota(models.Model):
     )
 
     def __str__(self):
-        return f"{self.data} - {self.cliente.nome}"
+        return f"{self.data.strftime('%d/%m/%Y')} - {self.cliente.nome}"

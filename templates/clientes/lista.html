@@ -1,40 +1,93 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Clientes</h2>
-    <a href="{% url 'criar_cliente' %}" class="btn btn-primary">+ Novo Cliente</a>
+  <h2>Clientes</h2>
+
+  <a href="{% url 'criar_cliente' %}" class="btn btn-primary">
+    + Novo Cliente
+  </a>
 </div>
 
+<input
+  type="text"
+  id="pesquisa"
+  placeholder="Pesquisar cliente..."
+  class="form-control mb-3"
+/>
+
 <table class="table table-hover table-bordered">
-    <thead class="table-dark">
-        <tr>
-            <th>Nome</th>
-            <th>Telefone</th>
-            <th>Email</th>
-            <th>Endereço</th>
-            <th style="width:150px;">Ações</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for c in clientes %}
-        <tr>
-            <td>{{ c.nome }}</td>
-            <td>{{ c.telefone }}</td>
-            <td>{{ c.email }}</td>
-            <td>{{ c.endereco }}</td>
-            <td>
-                <a href="{% url 'editar_cliente' c.id %}" class="btn btn-warning btn-sm">Editar</a>
-                <a href="{% url 'deletar_cliente' c.id %}" class="btn btn-danger btn-sm">Excluir</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="3" class="text-center">Nenhum cliente cadastrado</td>
-        </tr>
-        {% endfor %}
-    </tbody>
+  <thead class="table-dark">
+    <tr>
+      <th>Nome</th>
+      <th>Telefone</th>
+      <th>CPF</th>
+      <th>CNH</th>
+      <th>Email</th>
+      <th>Endereço</th>
+      <th>Criado Por</th>
+      <th style="width: 150px">Ações</th>
+    </tr>
+  </thead>
+
+  <tbody id="tabela-clientes">
+    {% for c in clientes %}
+
+    <tr>
+      <td>{{ c.nome }}</td>
+      <td>{{ c.telefone_formatado }}</td>
+      <td>{{ c.cpf_formatado }}</td>
+      <td>{{ c.cnh }}</td>
+      <td>{{ c.email }}</td>
+      <td>{{ c.endereco }}</td>
+      <td>{{ c.criado_por }}</td>
+
+      <td>
+        <a
+          href="{% url 'editar_cliente' c.id %}"
+          class="btn btn-warning btn-sm"
+        >
+          Editar
+        </a>
+
+        <a
+          href="{% url 'deletar_cliente' c.id %}"
+          class="btn btn-danger btn-sm"
+        >
+          Excluir
+        </a>
+      </td>
+    </tr>
+
+    {% empty %}
+
+    <tr>
+      <td colspan="6" class="text-center">Nenhum cliente cadastrado</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
 </table>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const pesquisa = document.getElementById("pesquisa");
+
+    pesquisa.addEventListener("input", function () {
+      let filtro = pesquisa.value.toLowerCase();
+
+      let linhas = document.querySelectorAll("#tabela-clientes tr");
+
+      linhas.forEach(function (linha) {
+        let textoLinha = linha.textContent.toLowerCase();
+
+        if (textoLinha.includes(filtro)) {
+          linha.style.display = "";
+        } else {
+          linha.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
 
 {% endblock %}

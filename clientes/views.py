@@ -2,17 +2,49 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Cliente
 from core.models import FilialCliente, Perfil
+from django.db.models import Q
 from .forms import ClienteForm
 
 
 @login_required
 def lista_clientes(request):
-    filial = request.user.perfil.filial
-    fc = FilialCliente.objects.filter(
-        filial=filial
+
+    busca = request.GET.get('busca')
+
+    # gerente/admin vê tudo
+    if request.user.is_superuser or request.user.perfil.is_gerente:
+
+        clientes = Cliente.objects.all()
+
+    # funcionário vê apenas clientes da filial dele
+    else:
+
+        clientes = Cliente.objects.filter(
+            filialcliente__filial=request.user.perfil.filial
+        )
+
+    # barra de pesquisa
+    if busca:
+
+        clientes = clientes.filter(
+            Q(nome__icontains=busca) |
+            Q(telefone__icontains=busca) |
+            Q(email__icontains=busca)
+        )
+
+    # evita registros duplicados
+    clientes = clientes.distinct().order_by('nome')
+
+    context = {
+        'clientes': clientes,
+        'busca': busca
+    }
+
+    return render(
+        request,
+        'clientes/lista.html',
+        context
     )
-    clientes = [f.cliente for f in fc]
-    return render(request, 'clientes/lista.html', {'clientes': clientes})
 
 
 @login_required
@@ -22,10 +54,14 @@ def criar_cliente(request):
     if form.is_valid():
 
         # salva cliente
-        cliente = form.save()
+        cliente = form.save(commit=False)
+
+        cliente.criado_por = request.user
 
         # pega filial do usuário logado
         filial = request.user.perfil.filial
+
+        cliente.save()
 
         # cria relação cliente x filial
         FilialCliente.objects.create(

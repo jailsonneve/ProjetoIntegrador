@@ -27,4 +27,27 @@
     </div>
 </div>
 
+<script src="https://unpkg.com/imask"></script>
+
+<script>
+    IMask(
+        document.getElementById('id_cpf'),
+        {
+            mask: '000.000.000-00'
+        }
+    );
+    IMask(
+        document.getElementById('id_telefone'),
+        {
+            mask: '(00) 00000-0000'
+        }
+    );
+    IMask(
+        document.getElementById('id_cnh'),
+        {
+            mask: '00000000000'
+        }
+    );
+</script>
+
 {% endblock %}
