@@ -36,7 +36,7 @@
       <td>{{ c.nome }}</td>
       <td>{{ c.telefone_formatado }}</td>
       <td>{{ c.cpf_formatado }}</td>
-      <td>{{ c.cnh }}</td>
+      <td>{{ c.cnh|default:"-" }}</td>
       <td>{{ c.email }}</td>
       <td>{{ c.endereco }}</td>
       <td>{{ c.criado_por }}</td>
