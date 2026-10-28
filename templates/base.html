@@ -198,6 +198,14 @@
             >
               <i class="bi bi-journal"></i> Diário
             </a>
+
+            {# Link do menu para a lista de manutenções. A classe "active" destaca o item quando a página atual é a rota 'lista_manutencoes' #}
+            <a
+              href="/manutencoes/"
+              class="{% if request.resolver_match.url_name == 'lista_manutencoes' %}active{% endif %}"
+            >
+              <i class="bi bi-tools"></i> Manutenções
+            </a>
           </div>
 
           <!-- FOOTER SIDEBAR -->
@@ -224,8 +232,21 @@
         </div>
 
         <!-- CONTEÚDO -->
-        <div class="col-md-10 p-4">{% block content %}{% endblock %}</div>
-      </div>
+         <div class="col-md-10 p-4">
+          {# Exibe as mensagens do Django (messages.success, messages.error...). O Bootstrap não tem a classe "alert-error", então "error" vira "danger" #}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+          {# Aqui entra o conteúdo de cada página que herda este base.html #}
+          {% block content %}{% endblock %}
+
+          {% block content %}{% endblock %}
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>

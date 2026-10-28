@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'rotas',
     'core.apps.CoreConfig',
     'diario',
+    'manutencoes', # app de registro de manutenções de veículos
 ]
 
 MIDDLEWARE = [

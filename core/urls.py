@@ -34,6 +34,7 @@ urlpatterns = [
     path('rotas/', include('rotas.urls')),
     path('cadastro/', cadastro, name='cadastro'),
     path('fornecedores/', include('fornecedores.urls')),
+    path('manutencoes/', include('manutencoes.urls')), # Rotas do app de manutenções: /manutencoes/ (lista) e /manutencoes/novo/ (cadastro)
     path('perfil/', perfil, name='perfil'),
     path('perfil/editar/', views.editar_perfil, name='editar_perfil'),
     path('perfil/senha/', views.alterar_senha, name='alterar_senha'),
